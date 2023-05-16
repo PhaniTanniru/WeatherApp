@@ -10,6 +10,8 @@ import Foundation
 struct WeatherAppConstants {
     static let navigationTitle: String = "Weather"
     static let appTitle: String = "WeatherApp"
+    static let searchListTitle = "WeatherSearch"
+    static let searchCity: String = "Search for a city"
     static let loadingIndicatorTag = 961942
     static let dateFormat_Short = "YYYY-MM-DD"
     static let dateFormat_Long = "EEE, dd MMMM YYYY, hh:mm a"

@@ -19,6 +19,13 @@ class WeatherViewController: UIViewController {
         }
     }
     
+    @IBOutlet weak var barBtnCurrentLocation: UIBarButtonItem!{
+        didSet{
+            barBtnCurrentLocation.primaryAction = nil
+            barBtnCurrentLocation.accessibilityIdentifier = "CurrentLocation"
+        }
+    }
+    
     //MARK: Private Properties
     let locationManager = CLLocationManager()
     var currentLocation : CLLocation!
@@ -102,6 +109,21 @@ class WeatherViewController: UIViewController {
     /// Hide No Data View
     func hideNoDataView() {
         noDataView.removeFromSuperview()
+    }
+}
+
+//MARK: - Weather Search Action
+extension WeatherViewController {
+    
+    @IBAction func searchBarButtonAction(_ sender: Any) {
+        if let weatherSearchVC = self.storyboard?.instantiateViewController(withIdentifier: "WeatherSearchViewController") as? WeatherSearchViewController {
+            weatherSearchVC.delegate = self
+            self.pushVC(destinationVC: weatherSearchVC)
+        }
+    }
+    
+    @IBAction func currentLocationBarButtonAction(_ sender: Any) {
+        fetchCurrentLocation()
     }
 }
 
@@ -195,5 +217,15 @@ extension WeatherViewController: CLLocationManagerDelegate{
     private func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         //Show Alert that Not able to fetch User's Location
         showAlert(message: error.localizedDescription)
+    }
+}
+
+// MARK: - Weather Search City Selection Handler
+extension WeatherViewController: CitySelectionProtocol {
+    
+    /// City Selected, Pass city id to handler
+    /// - Parameter cityId: City Id
+    func didSelectedCity(cityId: String) {
+        getWeatherForSelectedCity(cityId: cityId)
     }
 }
